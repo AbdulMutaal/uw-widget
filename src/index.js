@@ -31,10 +31,16 @@ const CustomRefinementList = connectRefinementList(({ attribute, items }) => {
 const Hit = ({hit}) => {
   console.log("hit", hit);
   return(
-    <div className="flex">
-      <img className="w-12" src={hit.image} alt="logo" />
+    <div className="flex items-center">
+      <img className="w-1/12 max-h-full h-full" src={hit.image} alt="logo" />
       <div>
-        <p>{hit.name}</p>
+        <div>
+          <p>{hit.name}</p>
+        </div>
+        <div>
+          <p>{hit.salePrice}</p>
+          <p>{hit.manufacturer}</p>
+        </div>
       </div>
       
     </div>
