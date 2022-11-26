@@ -12,7 +12,8 @@ module.exports = {
       colors: {
         lightBlack: "#121111",
         customBlack: "#080808",
-        black: "black"
+        black: "black",
+        blue: "#0000FF"
       }
     },
   },
