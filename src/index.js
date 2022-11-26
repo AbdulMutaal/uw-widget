@@ -1,17 +1,70 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  RefinementList
+} from "react-instantsearch/dom";
+import { connectRefinementList } from "react-instantsearch/connectors";
+import "./styles.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const CustomRefinementList = connectRefinementList(({ attribute, items }) => {
+  const fixedItems = [
+    { label: "Movies & TV Shows" },
+    { label: "Flat-Panel TVs" },
+    { label: "Headphones" }
+  ];
+  return (
+    <div>
+      <ul className="mt-3 hidden">
+        {fixedItems.map(item => (
+          <li key={item.attribute}>
+            {item.label}: {item.count}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+});
+
+const Hit = ({hit}) => {
+  console.log("hit", hit);
+  return(
+    <div className="flex">
+      <img className="w-12" src={hit.image} alt="logo" />
+      <div>
+        <p>{hit.name}</p>
+      </div>
+      
+    </div>
+  )
+
+}
+
+const App = () => (
+  <div className="bg-black flex justify-center" >
+    <InstantSearch
+      appId="latency"
+      apiKey="3d9875e51fbd20c7754e65422f7ce5e1"
+      indexName="bestbuy"
+    >
+      <div className="bg-lightBlack p-10">
+        <SearchBox 
+          translations={{placeholder: "Search for jobs..." }}/>
+        <CustomRefinementList attribute="category" limit={1000} operator="or" />
+        <RefinementList attribute="category" />
+      </div>
+      
+      <div className="bg-customBlack p-10">
+        <Hits hitComponent={Hit} />
+      </div>
+      
+
+    </InstantSearch>
+  </div>
+  
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
