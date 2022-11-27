@@ -4,32 +4,75 @@ import {
   InstantSearch,
   SearchBox,
   Hits,
-  RefinementList
+  RefinementList,
+  Highlight
 } from "react-instantsearch/dom";
 import { connectRefinementList } from "react-instantsearch/connectors";
 import "./styles.css";
 
-const CustomRefinementList = connectRefinementList(({ attribute, items }) => {
+const CustomRefinement = ({item}) => {
+  return(
+    <div className="m-2 mr-4 w-fit border-2 border-white rounded-lg p-2 text-white cursor-pointer">
+      {item.label}
+    </div>
+  )
+}
+
+const CustomSelectedRefinement = ({item}) => {
+  return(
+    <div className="m-2 mr-4 w-fit border-0 border-white rounded-lg p-2 text-white cursor-pointer bg-purple">
+      {item.label}
+    </div>
+  )
+}
+
+const CustomRefinementList = connectRefinementList(({ 
+  attribute, 
+  items, 
+  isFromSearch,
+  refine,
+  searchForItems,
+  createURL,
+}) => {
+
   const fixedItems = [
     { label: "Movies & TV Shows" },
     { label: "Flat-Panel TVs" },
     { label: "Headphones" }
   ];
   return (
-    <div>
-      <ul className="mt-3 hidden">
-        {fixedItems.map(item => (
-          <li key={item.attribute}>
-            {item.label}: {item.count}
-          </li>
-        ))}
-      </ul>
-    </div>
+    
+    <ul className="text-white flex flex-wrap mt-5">
+      <li>
+        <input
+          className="text-black hidden"
+          type="search"
+          onChange={event => searchForItems(event.currentTarget.value)}
+        />
+      </li>
+      {items.map(item => (
+        <li key={item.label} className="w-fit">
+          <a
+            href={createURL(item.value)}
+            onClick={event => {
+              event.preventDefault();
+              refine(item.value);
+            }}
+          >
+            {item.isRefined ? (
+              <CustomSelectedRefinement item={item} />
+            ) : (
+              <CustomRefinement item={item} />
+            )}{' '}
+            {/* ({item.count}) */}
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 });
 
 const Hit = ({hit}) => {
-  console.log("hit", hit);
   return(
     <div className="flex items-center justify-between">
       <div className="flex items-center">
@@ -65,8 +108,8 @@ const App = () => (
       <div className="bg-lightBlack p-10">
         <SearchBox 
           translations={{placeholder: "Search for jobs..." }}/>
-        <CustomRefinementList attribute="category" limit={1000} operator="or" />
-        <RefinementList attribute="category" />
+        <CustomRefinementList attribute="category" />
+        {/* <RefinementList attribute="category" /> */}
       </div>
       
       <div className="bg-customBlack p-10">

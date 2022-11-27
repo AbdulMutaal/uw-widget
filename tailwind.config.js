@@ -13,7 +13,8 @@ module.exports = {
         lightBlack: "#121111",
         customBlack: "#080808",
         black: "black",
-        blue: "#0000FF"
+        blue: "#0000FF",
+        purple: "#a373ff"
       }
     },
   },

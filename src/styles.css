@@ -40,6 +40,10 @@
     height: 100%;
 }
 
+/* .ais-RefinementList-item{
+    margin-bottom: 25px;
+} */
+
 .ais-RefinementList-item{
     margin: 5px;
     margin-right: 50px;
@@ -50,8 +54,9 @@
     cursor: pointer;
 }
 
-.ais-RefinementList-item:hover{
+.ais-RefinementList-label:hover{
     background-color: rgb(124, 126, 129);   
+    cursor: pointer;
 }
 
 .ais-RefinementList-item--selected{
